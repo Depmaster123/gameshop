@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рулетка - Скины за деньги</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .header {
+            background-color: #222;
+            color: #fff;
+            padding: 20px 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-list a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .nav-list a:hover {
+            text-decoration: underline;
+        }
+
+        .balance {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .balance span {
+            font-size: 18px;
+        }
+
+        .balance button {
+            padding: 10px 20px;
+            background-color: #ff4b4b;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .balance button:hover {
+            background-color: #e63946;
+        }
+
+        .hero-section {
+            background: url('https://www.example.com/hero-background.jpg') no-repeat center center/cover;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+            margin-bottom: 50px;
+        }
+
+        .hero-section h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .hero-section p {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+
+        .cta-button {
+            padding: 15px 30px;
+            background-color: #00b894;
+            color: #fff;
+            border: none;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .cta-button:hover {
+            background-color: #009874;
+        }
+
+        .roulette-section {
+            padding: 50px 0;
+            text-align: center;
+            background-color: #fff;
+        }
+
+        .roulette-section h2 {
+            margin-bottom: 40px;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .roulette-section form {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #eee;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .roulette-section input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .roulette-section button {
+            padding: 10px 20px;
+            background-color: #00b894;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .roulette-section button:hover {
+            background-color: #009874;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            height: 50px;
+        }
+
+        .roulette-wheel {
+            margin: 20px auto;
+            width: 100px;
+            height: 100px;
+            border: 10px solid #ddd;
+            border-top: 10px solid #00b894;
+            border-radius: 50%;
+            animation: spin 2s ease-out;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .wheel-message {
+            display: none;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .win {
+            color: #00b894;
+        }
+
+        .lose {
+            color: #ff4b4b;
+        }
+
+        .footer {
+            background-color: #222;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">SkinCase</h1>
+            <nav>
+                <ul class="nav-list">
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="roulette.html">Рулетка</a></li>
+                    <li><a href="inventory.html">Инвентарь</a></li>
+                </ul>
+            </nav>
+            <div class="balance">
+                <span>Баланс: <span id="balance">1000</span>₽</span>
+                <button onclick="addFunds()">Пополнить</button>
+                <button onclick="resetBalance()">Обнулить</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero-section">
+	<font color = black>
+        <h1>Попробуй свою удачу в рулетке!</h1>
+        <p>Сделай ставку и удвой свои деньги или потеряй их.</p>
+		</font>
+    </section>
+
+    <section class="roulette-section" id="roulette">
+        <div class="container">
+            <h2>Рулетка</h2>
+            <form id="roulette-form">
+                <input type="number" id="betAmount" placeholder="Введите сумму ставки" min="1" required>
+                <button type="submit">Сделать ставку</button>
+                <div class="roulette-wheel" id="roulette-wheel"></div>
+                <div class="wheel-message" id="wheel-message"></div>
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 SkinCase. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script>
+        window.onload = function() {
+            const savedBalance = localStorage.getItem('balance');
+            if (savedBalance !== null) {
+                document.getElementById('balance').innerText = savedBalance;
+            }
+        };
+
+        function saveBalance(balance) {
+            localStorage.setItem('balance', balance);
+        }
+
+        function addFunds() {
+            const additionalFunds = prompt('Введите сумму для пополнения:');
+            if (additionalFunds !== null && !isNaN(additionalFunds) && additionalFunds > 0) {
+                const balanceElement = document.getElementById('balance');
+                const currentBalance = parseInt(balanceElement.innerText);
+                const newBalance = currentBalance + parseInt(additionalFunds);
+                balanceElement.innerText = newBalance;
+                saveBalance(newBalance);
+            } else {
+                alert('Введите корректную сумму.');
+            }
+        }
+
+        function resetBalance() {
+            if (confirm('Вы уверены, что хотите обнулить баланс?')) {
+                const balanceElement = document.getElementById('balance');
+                balanceElement.innerText = '0';
+                saveBalance(0);
+            }
+        }
+
+        document.getElementById('roulette-form').onsubmit = function(event) {
+            event.preventDefault();
+
+            const betAmount = parseInt(document.getElementById('betAmount').value);
+            const balanceElement = document.getElementById('balance');
+            let balance = parseInt(balanceElement.innerText);
+            const wheelMessageElement = document.getElementById('wheel-message');
+            const wheelElement = document.getElementById('roulette-wheel');
+
+            if (isNaN(betAmount) || betAmount <= 0) {
+                alert('Введите корректную сумму ставки.');
+                return;
+            }
+
+            if (betAmount > balance) {
+                alert('У вас недостаточно средств для этой ставки.');
+                return;
+            }
+
+            // Показать анимацию вращения
+            wheelElement.style.animation = 'spin 2s ease-out';
+            wheelMessageElement.style.display = 'none';
+
+            setTimeout(() => {
+                wheelElement.style.animation = 'none';
+
+                const win = Math.random() > 0.5; // 50% шанс выиграть
+                if (win) {
+                    balance += betAmount * 2;
+                    wheelMessageElement.innerText = `Поздравляю! Вы выиграли ${betAmount}₽.`;
+                    wheelMessageElement.classList.add('win');
+                } else {
+                    balance -= betAmount;
+                    wheelMessageElement.innerText = `Увы, вы проиграли ${betAmount}₽.`;
+                    wheelMessageElement.classList.add('lose');
+                }
+
+                wheelMessageElement.style.display = 'block';
+                balanceElement.innerText = balance;
+                saveBalance(balance);
+            }, 2000); // Время анимации 2 секунды
+        };
+    </script>
+</body>
+</html>

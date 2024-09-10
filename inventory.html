@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Инвентарь - SkinCase</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .header {
+            background-color: #222;
+            color: #fff;
+            padding: 20px 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-list a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .inventory-section {
+            padding: 50px 0;
+            text-align: center;
+            background-color: #fff;
+        }
+
+        .inventory-section h2 {
+            margin-bottom: 40px;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .inventory {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .item {
+            background-color: #eee;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 200px;
+            position: relative;
+        }
+
+        .item img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .item h3 {
+            margin: 15px 0;
+            font-size: 18px;
+        }
+
+        .item p {
+            margin: 5px 0;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .item .delete-button,
+        .item .sell-button {
+		position: absolute;
+		bottom: 10px;
+		left: 10px;
+		width: 100%;
+		height: auto;
+		background-color: #00b894;
+		border-radius: 5px;
+		padding: 10px 0;
+		font-size: 16px;
+		margin-top: 10px;
+}
+
+        .item .sell-button {
+            top: unset;
+            right: unset;
+            bottom: 10px;
+            left: 10px;
+            width: 100%;
+            height: auto;
+            background-color: #00b894;
+            border-radius: 5px;
+            padding: 10px 0;
+            font-size: 16px;
+        }
+
+        .footer {
+            background-color: #222;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .balance-container {
+            text-align: right;
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .balance {
+            display: inline-block;
+            background-color: #00b894;
+            padding: 10px 20px;
+            border-radius: 10px;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">SkinCase</h1>
+            <nav>
+                <ul class="nav-list">
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="inventory.html">Инвентарь</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="inventory-section">
+        <div class="container">
+            <div class="balance-container">
+                Баланс: <span id="balance" class="balance">0</span> ₽
+            </div>
+            <h2>Ваш инвентарь</h2>
+            <div class="inventory" id="inventory">
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 SkinCase. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Загрузка баланса из localStorage
+        function loadBalance() {
+            const balance = JSON.parse(localStorage.getItem('balance')) || 0;
+            document.getElementById('balance').textContent = balance + ' ₽';
+        }
+
+        // Сохранение баланса в localStorage
+        function saveBalance(newBalance) {
+            localStorage.setItem('balance', JSON.stringify(newBalance));
+            loadBalance();
+        }
+
+        function loadInventory() {
+            const inventory = JSON.parse(localStorage.getItem('inventory')) || [];
+            const inventoryContainer = document.getElementById('inventory');
+            inventoryContainer.innerHTML = '';
+
+            inventory.forEach((item, index) => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'item';
+                itemElement.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <h3>${item.name}</h3>
+                    <p>Цена: ${item.price} ₽</p>
+                    <button class="delete-button" data-index="${index}">✖</button>
+                    <button class="sell-button" data-index="${index}">Продать за ${item.price} ₽</button>
+                `;
+                inventoryContainer.appendChild(itemElement);
+            });
+
+            // Обработчики для кнопок удаления и продажи
+            document.querySelectorAll('.delete-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const index = button.getAttribute('data-index');
+                    removeSkin(index);
+                });
+            });
+
+            document.querySelectorAll('.sell-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const index = button.getAttribute('data-index');
+                    sellSkin(index);
+                });
+            });
+        }
+
+        function removeSkin(index) {
+            const inventory = JSON.parse(localStorage.getItem('inventory')) || [];
+            inventory.splice(index, 1); // Удаление скина из инвентаря
+            localStorage.setItem('inventory', JSON.stringify(inventory));
+            loadInventory();
+        }
+
+        // Продажа скина с индивидуальной ценой
+        function sellSkin(index) {
+            const inventory = JSON.parse(localStorage.getItem('inventory')) || [];
+            const currentBalance = JSON.parse(localStorage.getItem('balance')) || 0;
+            const skinPrice = inventory[index].price;
+
+            // Удаляем скин и обновляем инвентарь
+            inventory.splice(index, 1);
+            localStorage.setItem('inventory', JSON.stringify(inventory));
+
+            // Обновляем баланс
+            const newBalance = currentBalance + skinPrice;
+            saveBalance(newBalance);
+
+            // Перезагружаем инвентарь
+            loadInventory();
+        }
+
+        window.onload = () => {
+            loadBalance();
+            loadInventory();
+        };
+    </script>
+</body>
+</html>

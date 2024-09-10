@@ -1,191 +1,326 @@
 <!DOCTYPE html>
-<html lang="lv">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Mājaslapas sākumlapa ar informāciju par uzņēmumu un pakalpojumiem.">
-    <title>GameShop - Sākumlapa</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Открытие кейсов - Скины за деньги</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
-            scroll-behavior: smooth;
+            box-sizing: border-box;
         }
-        header {
-            background-color: #333;
-            color: white;
-            padding: 15px 0;
-            text-align: center;
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .header {
+            background-color: #222;
+            color: #fff;
+            padding: 20px 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-list a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .nav-list a:hover {
+            text-decoration: underline;
+        }
+
+        .balance {
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 10px;
         }
-        .header-logo {
-            height: 50px; /* Задайте высоту логотипа */
+
+        .balance span {
+            font-size: 18px;
         }
-        .header-title {
-            margin: 0;
-            font-size: 36px;
+
+        .balance button {
+            padding: 10px 20px;
+            background-color: #ff4b4b;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
         }
-        nav {
+
+        .balance button:hover {
+            background-color: #e63946;
+        }
+
+        .hero-section {
+            background: url('https://www.example.com/hero-background.jpg') no-repeat center center/cover;
+            height: 400px;
             display: flex;
+            flex-direction: column;
             justify-content: center;
-            background-color: #444;
-        }
-        nav a {
-            color: white;
-            padding: 14px 20px;
-            text-decoration: none;
+            align-items: center;
             text-align: center;
+            color: #fff;
+            margin-bottom: 50px;
         }
-        nav a:hover {
-            background-color: #555;
-        }
-        .container {
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .hero {
-            background-image: url('hero-image.jpg');
-            background-size: cover;
-            background-position: center;
-            padding: 100px 20px;
-            text-align: center;
-            color: white;
-        }
-        .hero h1 {
+
+        .hero-section h1 {
             font-size: 48px;
-            margin: 0;
-            font-weight: bold;
-            color: #222;
+            font-weight: 700;
+            margin-bottom: 20px;
         }
-        .hero p {
+
+        .hero-section p {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+
+        .cta-button {
+            padding: 15px 30px;
+            background-color: #00b894;
+            color: #fff;
+            border: none;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .cta-button:hover {
+            background-color: #009874;
+        }
+
+        .case-section {
+            padding: 50px 0;
+            text-align: center;
+            background-color: #fff;
+        }
+
+        .case-section h2 {
+            margin-bottom: 40px;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .cases {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .case {
+            background-color: #eee;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 22%;
+            margin: 10px 0;
+        }
+
+        .case img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .case h3 {
+            margin: 15px 0;
             font-size: 24px;
         }
-        .hero .button {
-            display: inline-block;
-            background-color: #333;
-            color: white;
-            padding: 15px 30px;
-            margin-top: 20px;
-            text-decoration: none;
-            border-radius: 4px;
-            font-size: 20px;
+
+        .case p {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .case button {
+            padding: 10px 20px;
+            background-color: #00b894;
+            color: #fff;
+            border: none;
             cursor: pointer;
-            transition: background-color 0.3s;
+            font-size: 16px;
+            border-radius: 5px;
         }
-        .hero .button:hover {
-            background-color: #555;
+
+        .case button:hover {
+            background-color: #009874;
         }
-        .content {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-        .content .box {
-            background-color: white;
-            margin: 10px;
-            padding: 20px;
-            flex: 1;
-            min-width: 300px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .content .box h2 {
-            margin-top: 0;
-        }
-        .recommendations {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
-        .recommendations .box {
-            flex: 1;
-            min-width: 280px;
-            margin: 10px;
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .reviews {
-            background-color: white;
-            padding: 20px;
-            margin-top: 20px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .reviews h2 {
-            margin-top: 0;
-        }
-        footer {
-            background-color: #333;
-            color: white;
+
+        .footer {
+            background-color: #222;
+            color: #fff;
+            padding: 20px 0;
             text-align: center;
-            padding: 10px 0;
-            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1 class="header-title">GameShop</h1>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">SkinCase</h1>
+            <nav>
+                <ul class="nav-list">
+                    <li><a href="#">Главная</a></li>
+                    <li><a href="#cases">Кейсы</a></li>
+                    <li><a href="inventory.html">Инвентарь</a></li>
+					<li><a href="roulette.html">Рулетка</a></li>
+					<li><a href="clicker.html">Кликер</a></li>
+                </ul>
+            </nav>
+            <div class="balance">
+                <span>Баланс: <span id="balance">1000</span>₽</span>
+                <form action="add-funds.html" target="_blank">
+				<button>Пополнить</button>
+                <button onclick="resetBalance()">Обнулить</button>
+            </div>
+        </div>
     </header>
 
-    <nav>
-        <a href="#" onclick="location.reload();">Sākumlapa</a>
-        <a href="GameShopParMums.html">Par mums</a>
-        <a href="GameShopKontakti.html">Kontakti</a>
-        <a href="GameShopBuy.html">Preces</a>
-    </nav>
-
-    <section class="hero">
-        <h1>Laipni lūdzam mūsu internetveikalā!</h1>
-        <a href="GameShopBuy.html" class="button">Skatīt preces</a>
+    <section class="hero-section">
+	<font color = black>
+        <h1>Открывай кейсы и выбивай топовые скины!</h1>
+        <p>Выбирай интересные кейсы, открывай их и добавляй новые скины в свой инвентарь.</p>
+		</font>
+        <a href="#cases" class="cta-button">Посмотреть кейсы</a>
     </section>
 
-    <div class="container">
-        <section class="content">
-            <div class="box">
-                <h2>Info</h2>
-                <p>GameShop jūs varat nopirkt virtuālas preces jūsu mīļākajai spēlei par ļoti zemu cenu.</p>
+    <section class="case-section" id="cases">
+        <div class="container">
+            <div class="cases">
+                <div class="case">
+                    <img src="https://pub-5f12f7508ff04ae5925853dee0438460.r2.dev/data/csgo/resource/flash/econ/weapon_cases/crate_community_33_png.png" alt="Кейс Киловатт">
+                    <h3>Кейс Киловатт</h3>
+                    <button onclick="openCase('kilowatt.html', 65)">Открыть</button>
+					<p>
+					</p>
+					<p>Цена: 65₽</p>
+                </div>
+                <div class="case">
+                    <img src="https://pub-5f12f7508ff04ae5925853dee0438460.r2.dev/data/csgo/resource/flash/econ/weapon_cases/crate_community_32.png" alt="Кейс Революция">
+                    <h3>Кейс Революция</h3>
+                    <button onclick="openCase('revolution.html', 23)">Открыть</button>
+					<p>
+					</p>
+					<p>Цена: 23₽</p>
+                </div>
+                <div class="case">
+                    <img src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsUFJ5KBFZv668FFQwnfCcJmxDv9rhwIHZwqP3a-uGwz9Xv8F0j-qQrI3xiVLkrxVuZW-mJoWLMlhpWhFkc9M" alt="Кейс Грёзы и Кошмары">
+                    <h3>Кейс Грёзы</h3>
+                    <button onclick="openCase('dreams.html', 93)">Открыть</button>
+					<p>
+					</p>
+					<p>Цена: 93₽</p>
+                </div>
+                <div class="case">
+                    <img src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsUFJ5KBFZv668FFUynfWaI25G6Ijkl9iPw_SnNrjXw2oBu8cj3b2Qo4_33QbnrUdlYD37ddCLMlhpvs0XIz0" alt="Кейс Призма">
+                    <h3>Кейс Призма</h3>
+                    <button onclick="openCase('prisma.html', 44)">Открыть</button>
+					<p>
+					</p>
+					<p>Цена: 44₽</p>
+                </div>
+				<div class="case">
+                    <img src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf0ebcZThQ6tCvq4GGqPD1PrbQqW9e-NV9j_v-5YT0m1HglB81NDG3OoPDdwc4YViC-QW5lb_v1pC56pTOynprvHZ35n_YzEC3iEtEOOJqgaSACQLJ2iXmey0" alt="Ножевой Кейс">
+                    <h3>Кейс Бабочка</h3>
+                    <button onclick="openCase('butterfly.html', 5000)">Открыть</button>
+					<p>
+					</p>
+					<p>Цена: 5000₽</p>
+                </div>
+				<div class="case">
+                    <img src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf2PLacDBA5ciJh5C0g_bkNoTEhGlQ5vp9g-7J4cLx2wKw-hA6a2j7JoXEJgY6Z1uB_lPol-2-jcK17pyYnyRnsyEitHjegVXp1i87ARAZ" alt="Ножевой Кейс">
+                    <h3>Кейс Керамбит</h3>
+                    <button onclick="openCase('kerambit.html', 5000)">Открыть</button>
+					<p>
+					</p>
+					<p>Цена: 5000₽</p>
+                </div>
+				<div class="case">
+                    <img src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmcjgOrzUhFRe-sR_jez--YXygED6_0o4ZjildoDBdVA_ZguC-gO9yeq90Je4vZuYwHdguSgm5H7am0TkhAYMMLKzxtQfiA" alt="Ножевой Кейс">
+                    <h3>Кейс Байонетт</h3>
+                    <button onclick="openCase('bayonett.html', 5000)">Открыть</button>
+					<p>
+					</p>
+					<p>Цена: 5000₽</p>
+                </div>
+				<div class="case">
+                    <img src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJfwOfBfThW-NOJh4-0h-LmI7fUqWdY781lteXA54vwxga1_EJkMTz2IIWRIwNoN1mC-AO_kOy7h5G97cjMmiFguiAh5SvaykOpwUYbOly5x_c" alt="Ножевой Кейс">
+                    <h3>Кейс Стилетто</h3>
+                    <button onclick="openCase('stiletto.html', 5000)">Открыть</button>
+					<p>
+					</p>
+					<p>Цена: 5000₽</p>
+                </div>
+				
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="recommendations">
-            <div class="box">
-                <h2>Populārie produkti</h2>
-                <p>Apskatiet mūsu populārākos produktus un atklājiet jaunākos piedāvājumus.</p>
-                <ul>
-                    <li>Spēļu pāriem</li>
-                    <li>Virtuālās monētas</li>
-                    <li>Spēļu papildinājumi</li>
-                </ul>
-            </div>
-            <div class="box">
-                <h2>Jaunākie piedāvājumi</h2>
-                <p>Izpētiet mūsu jaunākos piedāvājumus un atlaides, lai iegūtu labākos piedāvājumus.</p>
-                <ul>
-                    <li>Atlaides līdz 50%</li>
-                    <li>Sezonas akcijas</li>
-                    <li>Ekskluzīvi piedāvājumi</li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="reviews">
-            <h2>Klientu atsauksmes</h2>
-            <p>"GameShop piedāvā izcilu klientu apkalpošanu un lielisku produktu izvēli!" - Andris</p>
-            <p>"Lieliski piedāvājumi un ātra apstrāde. Ieteiktu ikvienam!" - Laura</p>
-        </section>
-    </div>
-
-    <footer>
-        <p>&copy; 2024 GameShop. Visas tiesības aizsargātas.</p>
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 SkinCase. Все права защищены.</p>
+        </div>
     </footer>
 
+    <script>
+        window.onload = function() {
+            const savedBalance = localStorage.getItem('balance');
+            if (savedBalance !== null) {
+                document.getElementById('balance').innerText = savedBalance;
+            }
+        };
+
+        function saveBalance(balance) {
+            localStorage.setItem('balance', balance);
+        }
+
+        function openCase(url, casePrice) {
+            const balanceElement = document.getElementById('balance');
+            const balance = parseInt(balanceElement.innerText);
+
+            if (balance >= casePrice) {
+                const newBalance = balance - casePrice;
+                balanceElement.innerText = newBalance;
+                saveBalance(newBalance);
+                window.location.href = url;
+            } else {
+                alert('Ты Нищий бомж, иди пополни баланс!');
+            }
+        }
+
+        function resetBalance() {
+            if (confirm('Вы уверены, что хотите обнулить баланс?')) {
+                const balanceElement = document.getElementById('balance');
+                balanceElement.innerText = '0';
+                saveBalance(0);
+            }
+        }
+    </script>
 </body>
 </html>

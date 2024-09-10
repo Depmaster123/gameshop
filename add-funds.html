@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пополнение Баланса</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+
+        .container h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .container input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .container button {
+            padding: 10px 20px;
+            background-color: #00b894;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .container button:hover {
+            background-color: #009874;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Введите код пополнения</h1>
+        <input type="text" id="code" placeholder="Введите код">
+        <button onclick="validateCode()">Подтвердить</button>
+        <div id="message" style="margin-top: 20px;"></div>
+    </div>
+
+    <script>
+        function validateCode() {
+            const code = document.getElementById('code').value;
+            const messageElement = document.getElementById('message');
+
+            // Здесь можно заменить эту проверку на реальную проверку с сервера
+            if (code === 'ADMIN_CODE') {
+                // Имитация успешного пополнения баланса
+                const additionalFunds = prompt('Введите сумму для пополнения:');
+                if (additionalFunds !== null && !isNaN(additionalFunds) && additionalFunds > 0) {
+                    // Сохранение данных в localStorage
+                    const balance = localStorage.getItem('balance') || '0';
+                    const newBalance = parseInt(balance) + parseInt(additionalFunds);
+                    localStorage.setItem('balance', newBalance);
+                    messageElement.innerText = 'Баланс успешно пополнен!';
+                    setTimeout(() => window.location.href = 'index.html', 2000); // Перенаправление через 2 секунды
+                } else {
+                    alert('Введите корректную сумму.');
+                }
+            } else {
+                messageElement.innerText = 'Неверный код. Попробуйте еще раз.';
+            }
+        }
+    </script>
+</body>
+</html>

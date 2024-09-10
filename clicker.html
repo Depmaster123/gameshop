@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заработать - SkinCase</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .header {
+            background-color: #222;
+            color: #fff;
+            padding: 20px 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-list a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .earn-section {
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .earn-section h2 {
+            margin-bottom: 40px;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .round-button {
+            background-color: #00b894;
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            padding: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            width: 200px;
+            height: 200px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .round-button:hover {
+            transform: scale(1.1);
+        }
+
+        .balance-container {
+            margin-top: 40px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .balance {
+            display: inline-block;
+            background-color: #00b894;
+            padding: 10px 20px;
+            border-radius: 10px;
+            color: #fff;
+        }
+
+        .footer {
+            background-color: #222;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">SkinCase</h1>
+            <nav>
+                <ul class="nav-list">
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="inventory.html">Инвентарь</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="earn-section">
+        <div class="container">
+            <h2>Заработайте на нажатиях</h2>
+            <button class="round-button" id="earn-button">+1 ₽</button>
+            <div class="balance-container">
+                Ваш баланс: <span id="balance" class="balance">0</span> ₽
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 SkinCase. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Загрузка баланса из localStorage
+        function loadBalance() {
+            const balance = JSON.parse(localStorage.getItem('balance')) || 0;
+            document.getElementById('balance').textContent = balance + ' ₽';
+        }
+
+        // Сохранение баланса в localStorage
+        function saveBalance(newBalance) {
+            localStorage.setItem('balance', JSON.stringify(newBalance));
+            loadBalance();
+        }
+
+        // Функция для добавления 1 рубля за каждое нажатие
+        function earnMoney() {
+            const currentBalance = JSON.parse(localStorage.getItem('balance')) || 0;
+            const newBalance = currentBalance + 1;
+            saveBalance(newBalance);
+        }
+
+        // Привязка обработчика события к кнопке
+        document.getElementById('earn-button').addEventListener('click', earnMoney);
+
+        // Загрузка баланса при загрузке страницы
+        window.onload = loadBalance;
+    </script>
+</body>
+</html>

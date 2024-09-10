@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Открытие кейса</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background: linear-gradient(to right, #1a1a1a, #333);
+            color: #fff;
+            margin: 0;
+        }
+
+        .case-container {
+            background-color: #444;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            text-align: center;
+            width: 600px;
+        }
+
+        .case-opening {
+            padding: 20px;
+            background-color: #333;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reel {
+            display: flex;
+            transition: transform 2s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .item {
+            width: 200px;
+            height: 200px;
+            flex-shrink: 0;
+            margin: 0;
+        }
+
+        .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .case-opening::before, .case-opening::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            z-index: 10;
+        }
+
+        .case-opening::before {
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%) rotate(0deg);
+            border-bottom: 30px solid #ff4b4b;
+        }
+
+        .case-opening::after {
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%) rotate(180deg);
+            border-bottom: 0;
+            border-top: 30px solid #ff4b4b;
+        }
+
+        .start-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            color: #fff;
+            background-color: #00b894;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            margin-top: 20px;
+        }
+
+        .start-button:hover {
+            background-color: #009874;
+            transform: scale(1.05);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #fff;
+            color: #000;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        .modal-content img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .modal-content h2 {
+            margin: 0;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .modal-content p {
+            margin: 0;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .modal-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #00b894;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .modal-button:hover {
+            background-color: #009874;
+        }
+
+        /* Стили для блока всех скинов */
+        .skins-container {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .skin-item {
+            width: 150px;
+            text-align: center;
+        }
+
+        .skin-item img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .skin-item p {
+            margin-top: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="case-container">
+        <div class="case-opening" id="caseOpening">
+            <div class="reel" id="reel">
+            </div>
+        </div>
+        <button class="start-button" id="startButton">Открыть кейс</button>
+    </div>
+
+    <!-- Блок для отображения всех скинов -->
+    <div class="skins-container" id="skinsContainer">
+        <!-- Скины будут добавлены динамически -->
+    </div>
+
+    <!-- Модальное окно -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="Skin">
+            <h2 id="modalTitle">Поздравляем!</h2>
+            <p id="modalDescription">Вам выпал скин!</p>
+            <button class="modal-button" id="modalCloseButton">Закрыть</button>
+        </div>
+    </div>
+
+    <script>
+        const skins = [
+            { name: "MP7 | Mischief", price: 1000, image: "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou6ryFAR17P7YJgJQ7d-9kZSOkuXLP7LWnn9u5MRjjeyP942gigfi_0I-ZDvwJI_GJlI_ZwzZrFS6l73t18W-v57InHVgsikg7GGdwUK3QL_u2w" },
+            { name: "P250 | Verdigris", price: 700, image: "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpopujwezhhwszYI2gS08qzhoSCkOX9IITdn2xZ_Isi3bDFpNX0jgTn80FtYjqiJ9TDdVI8YQvUqVa7xuzp0J_u6Z7PwXdlpGB8shANWKCP" },
+            { name: "Galil AR | Akoben", price: 500, image: "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgposbupIgthwczbYQJF7dC_mL-KnPj2NrXummJW4NFOhujT8om72wG18hZrMmmldY-RcVdtY1iE-wO_xeu7hpDu6p6dzSEw7CMhtizVmwv3308ApowVKw" },
+            { name: "UMP-45 | Moonrise", price: 100, image: "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpoo7e1f1Jf0vL3ZDBSuImJmY-EmeX9IL7uhX5f-8BlteXI8oTht1i1uRQ5fW_wd9CXdQ9vZ16E81S5xOm5gcDp6sjNwHoxsikm7X_UmRO_iR9MZuZxxavJmvndWak" },
+            { name: "AK-47 | Uncharted", price: 70, image: "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot7HxfDhjxszJemkV092sgIWIqPv9NLPFqWdQ-sJ0xLqXrYis2Fa1_BE_Y2iidYOTdg43ZlHSq1m3x-y705O_uJ7Lynowv3M8pSGK7lPtmXQ" },
+            { name: "Five-SeveN | Angry Mob", price: 50, image: "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgposLOzLhRlxfbGTj5X09q_goW0hPLiNrXul2VW-txOhuDG_ZjKhFWmrBZyZm36LIDAegA_ZlCF-lW4w7rsgcDpu5WbzyBkuCYg7H3VnhayhRkaa_sv26KGUuZy7w" },
+            { name: "AWP | Atheris", price: 30, image: "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FAR17PLfYQJU5cyzhr-HnvD8J4Tdl3lW7YsjjuyWoNil0FXjqEZlZmryJtKQegQ-Yg7V-QK5wr_s1Je06syYzSNgpGB8shyWYXeM" },
+            { name: "M4A4 | The Emperor", price: 20, image: "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou-6kejhnwMzFJTwW09m7hIWZmOXLP7LWnn9u5MRjjeyPo933jQDs_kZlMWmiIdKQdVM-ZVnQ8ge2xui5gMXqu5jMnCFr63Nx7WGdwUKmIT3TEw" },
+            { name: "★ Talon Knife | Doppler Ruby", price: 10, image: "https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJfxPrMfipP7dezhr-KmsjmJrnIqWZQ-sd9j-Db8IjKhF2zowcDPzixc9OLJ1I2NFjV-Vi_lOjm0JfovM6dnScw7yIj4yrdyRy20B1PZ7Q5g_HIGELeWfJNclpFPg" }
+        ];
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function startCaseOpening() {
+            const caseOpening = document.getElementById('caseOpening');
+            const reel = document.getElementById('reel');
+            const startButton = document.getElementById('startButton');
+            const shuffledSkins = shuffle([...skins, ...skins]);
+            let reelHTML = '';
+
+            shuffledSkins.forEach(skin => {
+                reelHTML += `<div class="item"><img src="${skin.image}" alt="${skin.name}"></div>`;
+            });
+
+            reel.innerHTML = reelHTML;
+
+            const randomIndex = Math.floor(Math.random() * skins.length);
+            const itemsToShow = 3;
+            const itemWidth = 200;
+            const stopPosition = -(randomIndex * (itemWidth + 0)) + (itemsToShow - 1) * (itemWidth + 0) / 2;
+
+            caseOpening.style.display = 'block';
+
+            startButton.classList.add('hidden');
+
+            setTimeout(() => {
+                reel.style.transform = `translateX(${stopPosition}px)`;
+            }, 100);
+
+            setTimeout(() => {
+                const wonSkin = shuffledSkins[randomIndex];
+                showModal(wonSkin);
+                
+                const inventory = JSON.parse(localStorage.getItem('inventory')) || [];
+                inventory.push(wonSkin);
+                localStorage.setItem('inventory', JSON.stringify(inventory));
+                
+            }, 2000); // Время завершения анимации совпадает с длительностью transition
+        }
+
+        function showModal(skin) {
+            const modal = document.getElementById('modal');
+            const modalImage = document.getElementById('modalImage');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDescription = document.getElementById('modalDescription');
+            
+            modalImage.src = skin.image;
+            modalTitle.textContent = `Поздравляем!`;
+            modalDescription.textContent = `Вам выпал ${skin.name}`;
+            modal.style.display = 'flex';
+
+            document.getElementById('modalCloseButton').addEventListener('click', () => {
+                modal.style.display = 'none';
+                window.location.href = 'index.html';
+            });
+        }
+
+        // Функция для отображения всех скинов под кнопкой "Открыть кейс"
+        function displayAllSkins() {
+            const skinsContainer = document.getElementById('skinsContainer');
+            let skinsHTML = '';
+
+            skins.forEach(skin => {
+                skinsHTML += `
+                    <div class="skin-item">
+                        <img src="${skin.image}" alt="${skin.name}">
+                        <p>${skin.name}</p>
+                    </div>
+                `;
+            });
+
+            skinsContainer.innerHTML = skinsHTML;
+        }
+
+        document.getElementById('startButton').addEventListener('click', startCaseOpening);
+
+        // Отобразить все скины при загрузке страницы
+        displayAllSkins();
+    </script>
+</body>
+</html>
